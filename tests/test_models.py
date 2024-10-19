@@ -27,7 +27,7 @@ import os
 import logging
 import unittest
 from decimal import Decimal
-from service.models import Product, Category, db
+from service.models import Product, Category, db, DataValidationError
 from service import app
 from tests.factories import ProductFactory
 
@@ -69,6 +69,37 @@ class TestProductModel(unittest.TestCase):
     ######################################################################
     #  T E S T   C A S E S
     ######################################################################
+    def test_invalid_product_category_error(self):
+        product = Product(name="Fedora", description="A red hat", price=12.50, available=True, category=Category.CLOTHS)
+        # get dictionary data format
+        data = product.serialize()
+        # set an invalid category
+        data['category'] = 'INVALID'
+
+        with self.assertRaises(DataValidationError):
+            product.deserialize(data)
+
+    def test_category_type_error(self):
+        product = Product(name="Fedora", description="A red hat", price=12.50, available=True, category=Category.CLOTHS)
+        # get dictionary data format
+        data = product.serialize()
+        # set an invalid category
+        data['category'] = 1
+
+        with self.assertRaises(DataValidationError):
+            product.deserialize(data)
+
+    def test_invalid_product_availability_type_error(self):
+        product = Product(name="Fedora", description="A red hat", price=12.50, available=True, category=Category.CLOTHS)
+        # get dictionary data format
+        data = product.serialize()
+        # set an invalid category
+        data['available'] = 'false'
+
+        with self.assertRaises(DataValidationError):
+            product.deserialize(data)
+
+
 
     def test_create_a_product(self):
         """It should Create a product and assert that it exists"""
@@ -135,6 +166,15 @@ class TestProductModel(unittest.TestCase):
         self.assertEqual(len(products), 1)
         self.assertEqual(products[0].id, original_id)
         self.assertEqual(products[0].description, "testing")
+
+    def test_update_a_product_without_product_id(self):
+        """It should fail with DataValidationError"""
+        product = ProductFactory()
+        # Set product.id to None
+        product.id = None
+        # call update with id unset
+        with self.assertRaises(DataValidationError):
+            product.update()
 
     def test_delete_a_product(self):
         """It should Delete a Product"""
