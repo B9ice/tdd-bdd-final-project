@@ -28,6 +28,8 @@ from . import app
 ######################################################################
 # H E A L T H   C H E C K
 ######################################################################
+
+
 @app.route("/health")
 def healthcheck():
     """Let them know our heart is still beating"""
@@ -37,6 +39,8 @@ def healthcheck():
 ######################################################################
 # H O M E   P A G E
 ######################################################################
+
+
 @app.route("/")
 def index():
     """Base URL for our service"""
@@ -46,6 +50,8 @@ def index():
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S
 ######################################################################
+
+
 def check_content_type(content_type):
     """Checks that the media type is correct"""
     if "Content-Type" not in request.headers:
@@ -68,6 +74,8 @@ def check_content_type(content_type):
 ######################################################################
 # C R E A T E   A   N E W   P R O D U C T
 ######################################################################
+
+
 @app.route("/products", methods=["POST"])
 def create_products():
     """
@@ -96,6 +104,8 @@ def create_products():
 ######################################################################
 # L I S T   A L L   P R O D U C T S
 ######################################################################
+
+
 @app.route("/products", methods=["GET"])
 def list_products():
     """Returns a list of Products"""
@@ -130,6 +140,8 @@ def list_products():
 ######################################################################
 # R E A D   A   P R O D U C T
 ######################################################################
+
+
 @app.route("/products/<int:product_id>", methods=["GET"])
 def get_products(product_id):
     """
@@ -149,6 +161,8 @@ def get_products(product_id):
 ######################################################################
 # U P D A T E   A   P R O D U C T
 ######################################################################
+
+
 @app.route("/products/<int:product_id>", methods=["PUT"])
 def update_products(product_id):
     """
@@ -171,6 +185,8 @@ def update_products(product_id):
 ######################################################################
 # D E L E T E   A   P R O D U C T
 ######################################################################
+
+
 @app.route("/products/<int:product_id>", methods=["DELETE"])
 def delete_products(product_id):
     """
@@ -185,4 +201,3 @@ def delete_products(product_id):
         product.delete()
 
     return "", status.HTTP_204_NO_CONTENT
-    

@@ -70,6 +70,7 @@ class TestProductModel(unittest.TestCase):
     #  T E S T   C A S E S
     ######################################################################
     def test_invalid_product_category_error(self):
+        """Test for valid product category"""
         product = Product(name="Fedora", description="A red hat", price=12.50, available=True, category=Category.CLOTHS)
         # get dictionary data format
         data = product.serialize()
@@ -80,6 +81,7 @@ class TestProductModel(unittest.TestCase):
             product.deserialize(data)
 
     def test_category_type_error(self):
+        """Test product category expected str types"""
         product = Product(name="Fedora", description="A red hat", price=12.50, available=True, category=Category.CLOTHS)
         # get dictionary data format
         data = product.serialize()
@@ -90,6 +92,7 @@ class TestProductModel(unittest.TestCase):
             product.deserialize(data)
 
     def test_invalid_product_availability_type_error(self):
+        """Test expected product available bool type"""
         product = Product(name="Fedora", description="A red hat", price=12.50, available=True, category=Category.CLOTHS)
         # get dictionary data format
         data = product.serialize()
@@ -98,8 +101,6 @@ class TestProductModel(unittest.TestCase):
 
         with self.assertRaises(DataValidationError):
             product.deserialize(data)
-
-
 
     def test_create_a_product(self):
         """It should Create a product and assert that it exists"""
